@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ExecutionContext;
@@ -19,6 +20,7 @@ import org.springframework.batch.item.ItemWriter;
 /**
  * @author Felix
  */
+@Slf4j
 public class XenditInvoiceWriter implements ItemWriter<Booking> {
 
   private StepExecution stepExecution;
@@ -47,8 +49,15 @@ public class XenditInvoiceWriter implements ItemWriter<Booking> {
   public void write(List<? extends Booking> bookings) throws Exception {
     Xendit.apiKey = xenditApiKey;
     Integer totalInvoiceAmount = bookings.size() * getBookingFeePerBooking();
+    String email = users.getEmail();
+    if (Utility.isFBUserWithoutEmail(users)) {
+      log.info("Users {} is FB User without email, sending invoice to his alternate email: {}",
+          users, users.getAlternateEmail());
+      email = users.getAlternateEmail();
+    }
+
     Invoice invoice = Invoice.builder().externalId(getInvoiceId()).amount(totalInvoiceAmount)
-        .payerEmail(users.getEmail()).shouldSendEmail(true)
+        .payerEmail(email).shouldSendEmail(true)
         .description(getInvoiceDescription(bookings, totalInvoiceAmount)).build();
     invoice = Invoice.create(createInvoiceParams(invoice));
 
