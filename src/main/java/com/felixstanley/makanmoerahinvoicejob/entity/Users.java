@@ -9,12 +9,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author Felix
  */
 @Entity
 @Data
+@ToString(callSuper = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class Users extends AbstractEntity implements Serializable {
 

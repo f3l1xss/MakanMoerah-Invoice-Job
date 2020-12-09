@@ -5,12 +5,14 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author Felix
  */
 @Entity
 @Data
+@ToString(callSuper = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class Restaurant extends AbstractEntity implements Serializable {
 
