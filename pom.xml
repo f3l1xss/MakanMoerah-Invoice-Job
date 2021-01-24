@@ -16,7 +16,7 @@
   <description>Issue Invoice On Specific Month</description>
 
   <properties>
-    <java.version>12</java.version>
+    <java.version>11</java.version>
     <xendit.java.version>1.8.1</xendit.java.version>
     <commons.validator.version>1.7</commons.validator.version>
   </properties>
@@ -98,5 +98,23 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>prod</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <spring.profiles.active>prod</spring.profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <spring.profiles.active>dev</spring.profiles.active>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>
